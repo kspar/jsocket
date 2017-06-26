@@ -189,23 +189,6 @@ public class MessageSocket extends JSocket {
     }
 
     /**
-     * Receive a raw message
-     * @return message
-     */
-    public String receiveRawMessage() {
-        String msg = "";
-        byte[] bytes = new byte[0];
-
-        bytes = recv();
-        try {
-            msg = new String(bytes, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new AssertionError("UTF-8 is not supported");  // This should never happen
-        }
-        return msg;
-    }
-
-    /**
      * Receives message of specified size from socket and converts it to a String
      *
      * @param size The size to set buffer to
@@ -368,5 +351,36 @@ public class MessageSocket extends JSocket {
 
     public void setDefaultFunction(Function<String, String> f){
         func = f;
+    }
+
+    /**
+     * Receive a raw message
+     * @return message
+     */
+    public String receiveRawMessage() {
+        String msg = "";
+        byte[] bytes = new byte[0];
+
+        bytes = recv();
+        try {
+            msg = new String(bytes, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new AssertionError("UTF-8 is not supported");  // This should never happen
+        }
+        return msg;
+    }
+
+    /**
+     * Send message
+     * @param msg message to be sent
+     */
+    public void sendMessage(String msg)
+    {
+        try {
+            byte[] raw = msg.getBytes("UTF-8");
+            send(raw);
+        } catch (UnsupportedEncodingException e) {
+            throw new AssertionError("UTF-8 is not supported");  // This should never happen
+        }
     }
 }
