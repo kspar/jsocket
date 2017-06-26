@@ -189,6 +189,23 @@ public class MessageSocket extends JSocket {
     }
 
     /**
+     * Receive a raw message
+     * @return message
+     */
+    public String receiveRawMessage() {
+        String msg = "";
+        byte[] bytes = new byte[0];
+
+        bytes = recv();
+        try {
+            msg = new String(bytes, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new AssertionError("UTF-8 is not supported");  // This should never happen
+        }
+        return msg;
+    }
+
+    /**
      * Receives message of specified size from socket and converts it to a String
      *
      * @param size The size to set buffer to
