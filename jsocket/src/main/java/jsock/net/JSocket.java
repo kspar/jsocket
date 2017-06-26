@@ -51,7 +51,7 @@ public class JSocket implements IEncryptSocket {
         try {
             in.read(bytes);
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         return bytes;
     }
