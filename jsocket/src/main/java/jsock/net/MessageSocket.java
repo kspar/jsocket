@@ -1,5 +1,6 @@
 package jsock.net;
 
+import jsock.enums.FunctionType;
 import jsock.enums.StringToolType;
 import jsock.util.FunctionTool;
 import jsock.util.StringTool;
@@ -358,16 +359,16 @@ public class MessageSocket extends JSocket {
      * @return message
      */
     public String receiveRawMessage() {
-        String msg = "";
-        byte[] bytes = new byte[0];
+        String msg;
 
-        bytes = recv();
+        byte[] bytes = recv();
         try {
             msg = new String(bytes, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new AssertionError("UTF-8 is not supported");  // This should never happen
         }
-        return msg;
+
+        return FunctionTool.runFunction(msg, FunctionTool.sanitizationFunction(FunctionType.ONLY_NULLS));
     }
 
     /**
