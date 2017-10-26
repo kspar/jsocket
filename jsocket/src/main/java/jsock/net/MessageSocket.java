@@ -372,6 +372,23 @@ public class MessageSocket extends JSocket {
     }
 
     /**
+     * Receive a raw message
+     * @return message
+     */
+    public String receiveRawMessage(int size) {
+        String msg;
+
+        byte[] bytes = recv_all(size);
+        try {
+            msg = new String(bytes, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            throw new AssertionError("UTF-8 is not supported");  // This should never happen
+        }
+
+        return FunctionTool.runFunction(msg, FunctionTool.sanitizationFunction(FunctionType.ONLY_NULLS));
+    }
+
+    /**
      * Send message
      * @param msg message to be sent
      */
